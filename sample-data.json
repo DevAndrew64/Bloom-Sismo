@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "generated": "2025-01-01T00:00:00Z",
+    "total_records": 20,
+    "sources": ["Venezuela Te Busca", "Manos por Venezuela", "Cruz Roja Venezuela"]
+  },
+  "localizados": [
+    { "cedula": "12345678", "nombre": "Carlos Rodríguez", "fuente": "Venezuela Te Busca", "fecha": "2025-01-15" },
+    { "cedula": "87654321", "nombre": "María González", "fuente": "Manos por Venezuela", "fecha": "2025-01-14" },
+    { "cedula": "11223344", "nombre": "José Martínez", "fuente": "Cruz Roja Venezuela", "fecha": "2025-01-13" },
+    { "cedula": "44332211", "nombre": "Ana Pérez", "fuente": "Venezuela Te Busca", "fecha": "2025-01-12" },
+    { "cedula": "55667788", "nombre": "Luis Hernández", "fuente": "Manos por Venezuela", "fecha": "2025-01-11" },
+    { "cedula": "88776655", "nombre": "Carmen López", "fuente": "Venezuela Te Busca", "fecha": "2025-01-10" },
+    { "cedula": "99001122", "nombre": "Pedro Ramírez", "fuente": "Cruz Roja Venezuela", "fecha": "2025-01-09" },
+    { "cedula": "22110099", "nombre": "Isabel Torres", "fuente": "Venezuela Te Busca", "fecha": "2025-01-08" },
+    { "cedula": "33445566", "nombre": "Miguel Flores", "fuente": "Manos por Venezuela", "fecha": "2025-01-07" },
+    { "cedula": "66554433", "nombre": "Rosa Díaz", "fuente": "Cruz Roja Venezuela", "fecha": "2025-01-06" },
+    { "cedula": "10203040", "nombre": "Antonio Vargas", "fuente": "Venezuela Te Busca", "fecha": "2025-01-05" },
+    { "cedula": "40302010", "nombre": "Elena Castillo", "fuente": "Manos por Venezuela", "fecha": "2025-01-04" },
+    { "cedula": "50607080", "nombre": "Roberto Morales", "fuente": "Cruz Roja Venezuela", "fecha": "2025-01-03" },
+    { "cedula": "80706050", "nombre": "Patricia Jiménez", "fuente": "Venezuela Te Busca", "fecha": "2025-01-02" },
+    { "cedula": "15263748", "nombre": "Fernando Ruiz", "fuente": "Manos por Venezuela", "fecha": "2025-01-01" },
+    { "cedula": "84736251", "nombre": "Gabriela Mendoza", "fuente": "Cruz Roja Venezuela", "fecha": "2024-12-31" },
+    { "cedula": "19283746", "nombre": "Alejandro Soto", "fuente": "Venezuela Te Busca", "fecha": "2024-12-30" },
+    { "cedula": "64738291", "nombre": "Daniela Vega", "fuente": "Manos por Venezuela", "fecha": "2024-12-29" },
+    { "cedula": "73829104", "nombre": "Sergio Reyes", "fuente": "Cruz Roja Venezuela", "fecha": "2024-12-28" },
+    { "cedula": "40192837", "nombre": "Valentina Cruz", "fuente": "Venezuela Te Busca", "fecha": "2024-12-27" }
+  ]
+}

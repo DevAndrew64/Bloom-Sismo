@@ -1,0 +1,14 @@
+# Bloom-Sismo — GitHub Pages / Vercel deploy config
+# Este archivo permite que GitHub Pages sirva la carpeta raíz
+
+# Para GitHub Pages:
+# 1. Ve a Settings → Pages → Source: "Deploy from branch"
+# 2. Branch: main / (root)
+# 3. Guarda — en ~60 segundos estará en https://TU-USUARIO.github.io/Bloom-Sismo
+
+# Para Vercel (recomendado, más rápido):
+# 1. vercel.com → New Project → Import desde GitHub
+# 2. Framework: Other (Static)
+# 3. Build Command: (vacío)
+# 4. Output Directory: . (punto, carpeta raíz)
+# 5. Deploy
