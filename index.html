@@ -2,509 +2,363 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
 <meta name="theme-color" content="#070E17">
-<meta name="description" content="Bloom-Sismo · Consulta offline si tu familiar fue localizado. Sin internet, 0 ms.">
-<meta property="og:title" content="Bloom-Sismo · Buscador Offline de Desaparecidos">
-<meta property="og:description" content="Consulta sin internet si tu familiar fue localizado en Venezuela.">
-<title>Bloom-Sismo · Buscador Offline</title>
+<meta name="description" content="Bloom-Sismo · Consulta si tu familiar fue localizado tras el terremoto de Venezuela. Sin internet, 0 ms.">
+<meta property="og:title" content="Bloom-Sismo · Buscador de Desaparecidos Venezuela 2026">
+<meta property="og:description" content="Consulta offline si tu familiar fue localizado. Terremoto Venezuela junio 2026.">
+<title>Bloom-Sismo · Buscador Offline Venezuela</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════════════════
-   DESIGN TOKENS
-══════════════════════════════════════════════════════════ */
 :root{
-  --bg:       #070E17;
-  --bg2:      #0C1726;
-  --surf:     #0F1E30;
-  --surf2:    #152840;
-  --bord:     #1A3050;
-  --bord2:    #234268;
-  --txt:      #D6E8F5;
-  --muted:    #5A849E;
-  --muted2:   #3A6480;
-  --gold:     #F5C842;
-  --gold2:    #FFD95A;
-  --teal:     #2EC4B6;
-  --teal2:    #3DDDD0;
-  --red:      #E63946;
-  --blue:     #4A9ECC;
-  --blue2:    #5DB8EA;
-  --r:        14px;
-  --r2:       10px;
-  --gap:      1.1rem;
-  --glow-gold: 0 0 32px rgba(245,200,66,.18);
-  --glow-teal: 0 0 32px rgba(46,196,182,.18);
-  --glow-red:  0 0 20px rgba(230,57,70,.2);
+  --bg:#070E17;--bg2:#0C1726;--surf:#0F1E30;--surf2:#152840;
+  --bord:#1A3050;--bord2:#234268;
+  --txt:#D6E8F5;--muted:#5A849E;--muted2:#3A6480;
+  --gold:#F5C842;--gold2:#FFD95A;
+  --teal:#2EC4B6;--red:#E63946;--blue:#4A9ECC;--blue2:#5DB8EA;
+  --r:14px;--r2:10px;--gap:1rem;
+  --glow-gold:0 0 28px rgba(245,200,66,.16);
+  --glow-teal:0 0 28px rgba(46,196,182,.16);
+  --glow-red:0 0 18px rgba(230,57,70,.18);
 }
-
-/* ══════════════════════════════════════════════════════════
-   RESET + BASE
-══════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:15px;scroll-behavior:smooth}
+html{font-size:15px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
   font-family:'Inter',system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--txt);
+  background:var(--bg);color:var(--txt);
   min-height:100dvh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  display:flex;flex-direction:column;align-items:center;
   overflow-x:hidden;
 }
-
-/* ══════════════════════════════════════════════════════════
-   AMBIENT BACKGROUND (SVG noise + radial orbs)
-══════════════════════════════════════════════════════════ */
 body::before{
-  content:'';
-  position:fixed;inset:0;
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
   background:
-    radial-gradient(ellipse 70% 50% at 20% 10%, rgba(74,158,204,.07) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(46,196,182,.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(245,200,66,.03) 0%, transparent 80%);
-  pointer-events:none;z-index:0;
+    radial-gradient(ellipse 70% 50% at 20% 10%,rgba(74,158,204,.07) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 40% at 80% 80%,rgba(46,196,182,.06) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 60% at 50% 50%,rgba(245,200,66,.03) 0%,transparent 80%);
 }
 
-/* ══════════════════════════════════════════════════════════
-   LAYOUT
-══════════════════════════════════════════════════════════ */
+/* ── LAYOUT ── */
 .wrap{
   position:relative;z-index:1;
-  width:100%;max-width:510px;
-  padding:0 1rem 4rem;
+  width:100%;max-width:520px;
+  padding:0 .9rem 4rem;
   display:flex;flex-direction:column;gap:var(--gap);
 }
 
-/* ══════════════════════════════════════════════════════════
-   HEADER
-══════════════════════════════════════════════════════════ */
-header{padding:2.2rem 0 .6rem;display:flex;flex-direction:column;gap:.65rem}
-
-.logo-row{display:flex;align-items:center;gap:.85rem}
-
-.logo-icon{
-  width:44px;height:44px;flex-shrink:0;
-  filter:drop-shadow(0 0 10px rgba(245,200,66,.3));
-}
-
-.logo-text{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:1.75rem;font-weight:700;
-  letter-spacing:-.03em;line-height:1;
-}
+/* ── HEADER ── */
+header{padding:1.8rem 0 .4rem;display:flex;flex-direction:column;gap:.55rem}
+.logo-row{display:flex;align-items:center;gap:.75rem}
+.logo-icon{width:42px;height:42px;flex-shrink:0;filter:drop-shadow(0 0 8px rgba(245,200,66,.28))}
+.logo-text{font-family:'Space Grotesk',sans-serif;font-size:1.65rem;font-weight:700;letter-spacing:-.03em;line-height:1}
 .logo-text em{color:var(--gold);font-style:normal}
+.tagline{font-size:.78rem;color:var(--muted);line-height:1.6;max-width:340px}
 
-.tagline{
-  font-size:.8rem;color:var(--muted);line-height:1.65;max-width:320px;
-}
-
-/* pill de versión */
-.version-pill{
+.vpill{
   display:inline-flex;align-items:center;gap:.4rem;
-  background:rgba(245,200,66,.07);
-  border:1px solid rgba(245,200,66,.18);
-  border-radius:100px;
-  font-size:.68rem;font-weight:600;
+  background:rgba(245,200,66,.07);border:1px solid rgba(245,200,66,.18);
+  border-radius:100px;font-size:.66rem;font-weight:700;
   color:var(--gold);letter-spacing:.06em;
-  padding:.25rem .65rem;align-self:flex-start;
+  padding:.22rem .6rem;align-self:flex-start;
 }
-.version-pill span{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pls 2s ease infinite}
+.vpill-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:pls 2s ease infinite;flex-shrink:0}
 
-/* ══════════════════════════════════════════════════════════
-   SISMÓGRAFO HERO
-══════════════════════════════════════════════════════════ */
+/* ── ALERTA EMERGENCIA ── */
+.emergency-banner{
+  display:flex;align-items:flex-start;gap:.6rem;
+  background:rgba(230,57,70,.08);
+  border:1px solid rgba(230,57,70,.3);
+  border-left:3px solid var(--red);
+  border-radius:var(--r2);
+  padding:.75rem 1rem;
+  font-size:.76rem;color:var(--txt);line-height:1.6;
+}
+.emergency-banner strong{color:var(--red)}
+.emergency-banner svg{flex-shrink:0;margin-top:.1rem}
+
+/* ── SISMÓGRAFO ── */
 .seismo-wrap{
-  position:relative;
-  width:100%;height:62px;
-  background:var(--surf);
-  border:1px solid var(--bord);
-  border-radius:var(--r);
-  overflow:hidden;
+  position:relative;width:100%;height:58px;
+  background:var(--surf);border:1px solid var(--bord);
+  border-radius:var(--r);overflow:hidden;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
 }
-/* línea de gradiente izq/der */
 .seismo-wrap::before,.seismo-wrap::after{
-  content:'';position:absolute;top:0;bottom:0;width:48px;z-index:2;pointer-events:none;
+  content:'';position:absolute;top:0;bottom:0;width:44px;z-index:2;pointer-events:none;
 }
 .seismo-wrap::before{left:0;background:linear-gradient(90deg,var(--surf),transparent)}
-.seismo-wrap::after {right:0;background:linear-gradient(270deg,var(--surf),transparent)}
-
-.seismo-svg{
-  position:absolute;top:0;left:0;
-  width:200%;height:100%;
-  animation:seismo 5s linear infinite;
-}
+.seismo-wrap::after{right:0;background:linear-gradient(270deg,var(--surf),transparent)}
+.seismo-svg{position:absolute;top:0;left:0;width:200%;height:100%;animation:seismo 5s linear infinite}
 .seismo-svg.calm{animation-duration:9s}
 @keyframes seismo{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
 .seismo-label{
-  position:absolute;right:1rem;top:50%;transform:translateY(-50%);
-  font-size:.65rem;font-family:'Space Grotesk',sans-serif;
+  position:absolute;right:.9rem;top:50%;transform:translateY(-50%);
+  font-size:.62rem;font-family:'Space Grotesk',sans-serif;
   font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);pointer-events:none;z-index:3;
-  transition:color .4s;
+  color:var(--muted);pointer-events:none;z-index:3;transition:color .4s;
 }
 
-/* ══════════════════════════════════════════════════════════
-   CARDS
-══════════════════════════════════════════════════════════ */
+/* ── CARDS ── */
 .card{
-  background:var(--surf);
-  border:1px solid var(--bord);
-  border-radius:var(--r);
-  padding:1.4rem;
-  display:flex;flex-direction:column;gap:.9rem;
-  box-shadow:0 4px 24px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.025);
-  transition:border-color .25s,box-shadow .25s;
+  background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:1.25rem;display:flex;flex-direction:column;gap:.85rem;
+  box-shadow:0 4px 20px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.02);
+  transition:border-color .2s,box-shadow .2s;
 }
 .card:focus-within{
   border-color:var(--bord2);
-  box-shadow:0 4px 32px rgba(0,0,0,.3),var(--glow-gold),inset 0 1px 0 rgba(255,255,255,.03);
+  box-shadow:0 4px 28px rgba(0,0,0,.28),var(--glow-gold),inset 0 1px 0 rgba(255,255,255,.025);
 }
-
 .card-label{
-  display:flex;align-items:center;gap:.5rem;
+  display:flex;align-items:center;gap:.45rem;
   font-family:'Space Grotesk',sans-serif;
-  font-size:.7rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.12em;
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;
   color:var(--gold);
 }
 .card-label svg{flex-shrink:0}
 
-/* ══════════════════════════════════════════════════════════
-   INPUTS
-══════════════════════════════════════════════════════════ */
-.field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
-
-.field label{
-  font-size:.75rem;font-weight:500;
-  color:var(--muted);letter-spacing:.01em;
-}
+/* ── INPUTS ── */
+.field{display:flex;flex-direction:column;gap:.3rem;min-width:0;width:100%}
+.field label{font-size:.73rem;font-weight:500;color:var(--muted)}
 
 input[type=text],input[type=number]{
   width:100%;min-width:0;
-  background:var(--bg2);
-  border:1.5px solid var(--bord);
-  border-radius:var(--r2);
-  color:var(--txt);
-  font-size:.98rem;
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:500;
-  padding:.68rem .95rem;
-  outline:none;
-  transition:border-color .18s,box-shadow .18s,background .18s;
+  background:var(--bg2);border:1.5px solid var(--bord);border-radius:var(--r2);
+  color:var(--txt);font-size:1rem;
+  font-family:'Space Grotesk',sans-serif;font-weight:500;
+  padding:.65rem .9rem;outline:none;
+  transition:border-color .18s,box-shadow .18s;
   -moz-appearance:textfield;
+  /* importante: evita desbordamiento en móvil */
+  box-sizing:border-box;
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input:focus{
   border-color:var(--gold);
-  background:rgba(12,23,38,.9);
   box-shadow:0 0 0 3px rgba(245,200,66,.1);
 }
 input::placeholder{color:var(--muted2);font-weight:400}
 
-/* ══════════════════════════════════════════════════════════
-   SEARCH ROW
-══════════════════════════════════════════════════════════ */
-.search-row{display:flex;gap:.5rem;align-items:flex-end}
+/* ── SEARCH ROW ── */
+.search-row{display:flex;gap:.5rem;align-items:flex-end;width:100%}
 .search-row .field{flex:1;min-width:0}
-
 .btn-search{
   flex-shrink:0;
   background:linear-gradient(135deg,var(--gold2),var(--gold));
-  color:#0a1520;
-  border:none;border-radius:var(--r2);
-  font-family:'Space Grotesk',sans-serif;font-weight:700;
-  font-size:.92rem;
-  height:43px;padding:0 1.3rem;
+  color:#0a1520;border:none;border-radius:var(--r2);
+  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;
+  height:42px;padding:0 1.2rem;
   cursor:pointer;white-space:nowrap;
-  box-shadow:0 4px 16px rgba(245,200,66,.25);
-  transition:opacity .15s,transform .1s,box-shadow .15s;
+  box-shadow:0 3px 14px rgba(245,200,66,.22);
+  transition:opacity .15s,transform .1s;
   position:relative;overflow:hidden;
 }
 .btn-search::after{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(255,255,255,.12) 0%,transparent 100%);
+  background:linear-gradient(180deg,rgba(255,255,255,.14) 0%,transparent 100%);
   pointer-events:none;
 }
-.btn-search:hover{opacity:.9;box-shadow:0 6px 22px rgba(245,200,66,.35)}
-.btn-search:active{transform:scale(.97);opacity:.85}
+.btn-search:hover{opacity:.9}
+.btn-search:active{transform:scale(.97)}
 
-/* ══════════════════════════════════════════════════════════
-   RESULTADO
-══════════════════════════════════════════════════════════ */
+/* ── RESULTADO ── */
 .result{
-  display:none;
-  border-radius:var(--r2);
-  padding:1.1rem 1.2rem;
-  flex-direction:column;gap:.55rem;
-  animation:fadeUp .28s cubic-bezier(.22,.61,.36,1);
+  display:none;border-radius:var(--r2);
+  padding:1rem 1.1rem;flex-direction:column;gap:.5rem;
+  animation:fadeUp .25s cubic-bezier(.22,.61,.36,1);
 }
 .result.show{display:flex}
 .result.found{
   background:linear-gradient(135deg,rgba(46,196,182,.08),rgba(46,196,182,.04));
-  border:1.5px solid rgba(46,196,182,.45);
-  box-shadow:var(--glow-teal);
+  border:1.5px solid rgba(46,196,182,.4);box-shadow:var(--glow-teal);
 }
 .result.not-found{
   background:linear-gradient(135deg,rgba(74,158,204,.07),rgba(74,158,204,.03));
-  border:1.5px solid rgba(74,158,204,.4);
+  border:1.5px solid rgba(74,158,204,.35);
 }
-
-.result-head{display:flex;align-items:center;gap:.7rem}
-.result-emoji{font-size:1.6rem;line-height:1;flex-shrink:0}
-.result-title{
-  font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;
-}
+.result-head{display:flex;align-items:center;gap:.65rem}
+.result-emoji{font-size:1.5rem;line-height:1;flex-shrink:0}
+.result-title{font-family:'Space Grotesk',sans-serif;font-size:.92rem;font-weight:700}
 .result.found .result-title{color:var(--teal)}
 .result.not-found .result-title{color:var(--blue)}
-
-.result-body{font-size:.8rem;color:var(--muted);line-height:1.65}
-
+.result-body{font-size:.78rem;color:var(--muted);line-height:1.6}
 .result-source{
-  display:none;align-items:center;gap:.4rem;
-  background:rgba(245,200,66,.08);
-  border:1px solid rgba(245,200,66,.22);
-  color:var(--gold);
-  font-size:.72rem;font-weight:700;letter-spacing:.04em;
-  padding:.3rem .7rem;border-radius:100px;
-  align-self:flex-start;
+  display:none;align-items:center;gap:.35rem;
+  background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.2);
+  color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.04em;
+  padding:.27rem .65rem;border-radius:100px;align-self:flex-start;
 }
-
 .result-note{
-  font-size:.72rem;color:var(--muted);
-  padding-top:.45rem;
-  border-top:1px solid var(--bord);
-  line-height:1.6;
+  font-size:.7rem;color:var(--muted);
+  padding-top:.4rem;border-top:1px solid var(--bord);line-height:1.6;
 }
 
-/* ══════════════════════════════════════════════════════════
-   STATUS BAR
-══════════════════════════════════════════════════════════ */
+/* ── STATUS BAR ── */
 .statusbar{
   display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:.4rem;
-  padding:.5rem .9rem;
+  flex-wrap:wrap;gap:.35rem;
+  padding:.45rem .85rem;
   background:var(--surf);border:1px solid var(--bord);border-radius:var(--r2);
-  font-size:.7rem;
+  font-size:.68rem;
 }
-.si{display:flex;align-items:center;gap:.4rem;color:var(--muted)}
+.si{display:flex;align-items:center;gap:.35rem;color:var(--muted);min-width:0}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.dot.on{background:var(--teal);box-shadow:0 0 6px var(--teal)}
+.dot.on{background:var(--teal);box-shadow:0 0 5px var(--teal)}
 .dot.off{background:var(--red)}
-
-/* ══════════════════════════════════════════════════════════
-   ALERT BANNER (config Supabase)
-══════════════════════════════════════════════════════════ */
-.alert{
-  display:none;align-items:flex-start;gap:.55rem;
-  background:rgba(245,200,66,.05);
-  border:1px solid rgba(245,200,66,.18);
-  border-left:3px solid var(--gold);
-  border-radius:var(--r2);
-  padding:.75rem 1rem;
-  font-size:.75rem;color:var(--muted);line-height:1.65;
-}
-.alert.show{display:flex}
-.alert strong{color:var(--gold)}
-.alert code{
-  background:rgba(255,255,255,.06);border-radius:4px;
-  padding:.1em .4em;font-size:.85em;color:var(--blue2);
-}
-
-/* ══════════════════════════════════════════════════════════
-   QUEUE PILL
-══════════════════════════════════════════════════════════ */
-.queue{
-  display:none;align-items:center;gap:.5rem;
-  background:rgba(245,200,66,.05);
-  border:1px solid rgba(245,200,66,.12);
-  border-radius:100px;padding:.4rem .9rem;
-  font-size:.72rem;color:var(--muted);
-}
-.queue.show{display:flex}
-.queue .dot{background:var(--gold);animation:pls 1.4s ease infinite}
 @keyframes pls{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* ══════════════════════════════════════════════════════════
-   ACCORDION (Reportar)
-══════════════════════════════════════════════════════════ */
+/* ── ALERT (Supabase no configurado) ── */
+.cfg-alert{
+  display:none;align-items:flex-start;gap:.5rem;
+  background:rgba(245,200,66,.05);
+  border:1px solid rgba(245,200,66,.16);border-left:3px solid var(--gold);
+  border-radius:var(--r2);padding:.7rem .9rem;
+  font-size:.73rem;color:var(--muted);line-height:1.6;
+}
+.cfg-alert.show{display:flex}
+.cfg-alert strong{color:var(--gold)}
+.cfg-alert code{
+  background:rgba(255,255,255,.06);border-radius:4px;
+  padding:.1em .35em;font-size:.85em;color:var(--blue2);
+}
+
+/* ── QUEUE PILL ── */
+.queue-pill{
+  display:none;align-items:center;gap:.45rem;
+  background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.11);
+  border-radius:100px;padding:.38rem .85rem;
+  font-size:.7rem;color:var(--muted);
+}
+.queue-pill.show{display:flex}
+.queue-pill .dot{background:var(--gold);animation:pls 1.4s ease infinite}
+
+/* ── ACCORDION (Reportar) ── */
 .acc-trigger{
-  all:unset;cursor:pointer;
+  all:unset;cursor:pointer;box-sizing:border-box;
   width:100%;display:flex;align-items:center;justify-content:space-between;
-  font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:600;
-  color:var(--muted);
-  padding:.6rem .8rem;border-radius:var(--r2);
+  font-family:'Space Grotesk',sans-serif;font-size:.83rem;font-weight:600;
+  color:var(--muted);padding:.55rem .75rem;border-radius:var(--r2);
   border:1.5px dashed var(--bord);
   transition:border-color .18s,color .18s,background .18s;
 }
 .acc-trigger:hover{border-color:var(--bord2);color:var(--txt);background:rgba(255,255,255,.02)}
 .acc-trigger.open{border-style:solid;border-color:var(--bord2);color:var(--txt);background:rgba(255,255,255,.02)}
-.acc-chevron{
-  width:18px;height:18px;transition:transform .22s;flex-shrink:0;
-  stroke:currentColor;
-}
+.acc-chevron{width:17px;height:17px;transition:transform .2s;flex-shrink:0;stroke:currentColor;fill:none}
 .acc-trigger.open .acc-chevron{transform:rotate(180deg)}
-
-.acc-body{
-  display:none;flex-direction:column;gap:.75rem;
-  animation:fadeUp .22s ease;
-  padding-top:.2rem;
-}
+.acc-body{display:none;flex-direction:column;gap:.7rem;padding-top:.15rem;animation:fadeUp .2s ease}
 .acc-body.show{display:flex}
 
-.form-row{display:flex;gap:.55rem;align-items:flex-end}
+/* form-row: flex en desktop, columna en móvil estrecho */
+.form-row{display:flex;gap:.5rem;align-items:flex-end;width:100%}
 .form-row .field{flex:1;min-width:0}
-.form-row .field.narrow{flex:0 0 128px}
+.form-row .field.narrow{flex:0 0 120px}
 
 .btn-report{
-  all:unset;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:.5rem;
+  all:unset;cursor:pointer;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
   width:100%;
-  background:linear-gradient(135deg,rgba(230,57,70,.12),rgba(230,57,70,.07));
-  border:1.5px solid rgba(230,57,70,.4);
-  border-radius:var(--r2);
-  color:var(--red);
-  font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem;
-  padding:.72rem 1rem;
+  background:linear-gradient(135deg,rgba(230,57,70,.1),rgba(230,57,70,.06));
+  border:1.5px solid rgba(230,57,70,.35);border-radius:var(--r2);
+  color:var(--red);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;
+  padding:.68rem 1rem;
   transition:background .18s,border-color .18s,box-shadow .18s;
 }
-.btn-report:hover{
-  background:rgba(230,57,70,.18);
-  border-color:rgba(230,57,70,.65);
-  box-shadow:var(--glow-red);
-}
+.btn-report:hover{background:rgba(230,57,70,.16);border-color:rgba(230,57,70,.6);box-shadow:var(--glow-red)}
 
 #r-feedback{
-  font-size:.75rem;color:var(--muted);display:none;
-  line-height:1.6;padding:.6rem .85rem;
-  background:rgba(46,196,182,.05);
-  border:1px solid rgba(46,196,182,.15);
-  border-radius:var(--r2);
-  animation:fadeUp .2s ease;
+  font-size:.73rem;color:var(--muted);display:none;line-height:1.6;
+  padding:.55rem .8rem;
+  background:rgba(46,196,182,.05);border:1px solid rgba(46,196,182,.14);
+  border-radius:var(--r2);animation:fadeUp .2s ease;
 }
 
-/* ══════════════════════════════════════════════════════════
-   QR SECTION
-══════════════════════════════════════════════════════════ */
-.qr-wrap{
-  display:none;flex-direction:column;gap:.75rem;
-  animation:fadeUp .22s ease;
-}
+/* ── QR ── */
+.qr-wrap{display:none;flex-direction:column;gap:.7rem;animation:fadeUp .2s ease}
 .qr-wrap.show{display:flex}
-.qr-note{font-size:.75rem;color:var(--muted);line-height:1.65}
+.qr-note{font-size:.73rem;color:var(--muted);line-height:1.6}
 .qr-box{
   display:flex;justify-content:center;
-  padding:1.1rem;background:#fff;border-radius:var(--r2);
-  box-shadow:0 0 0 1px var(--bord);
+  padding:1rem;background:#fff;border-radius:var(--r2);
 }
 #qr-render canvas,#qr-render img{display:block;max-width:200px;height:auto}
 
 .btn-ghost{
-  all:unset;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:.45rem;
-  width:100%;
-  border:1.5px solid var(--bord);border-radius:var(--r2);
-  color:var(--muted);
-  font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.8rem;
-  padding:.6rem 1rem;
-  transition:border-color .18s,color .18s;
+  all:unset;cursor:pointer;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+  width:100%;border:1.5px solid var(--bord);border-radius:var(--r2);
+  color:var(--muted);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.78rem;
+  padding:.55rem 1rem;transition:border-color .18s,color .18s;
 }
 .btn-ghost:hover{border-color:var(--blue);color:var(--blue2)}
 
-/* ══════════════════════════════════════════════════════════
-   DIVIDER / SECTION LABELS
-══════════════════════════════════════════════════════════ */
-.section-divider{
-  display:flex;align-items:center;gap:.7rem;
-  font-size:.65rem;font-weight:700;letter-spacing:.1em;
+/* ── DIVIDERS ── */
+.sdiv{
+  display:flex;align-items:center;gap:.65rem;
+  font-size:.63rem;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted2);
 }
-.section-divider::before,.section-divider::after{
-  content:'';flex:1;height:1px;background:var(--bord);
-}
+.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:var(--bord)}
 
-/* ══════════════════════════════════════════════════════════
-   FOOTER
-══════════════════════════════════════════════════════════ */
-footer{
-  padding:.5rem 0 0;display:flex;flex-direction:column;
-  gap:.35rem;align-items:center;text-align:center;
-}
-.footer-line{font-size:.68rem;color:var(--muted2);line-height:1.6}
-.footer-math{
-  font-size:.64rem;color:var(--bord2);
-  font-family:'Space Grotesk',monospace;letter-spacing:.02em;
-}
-.footer-badges{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-top:.2rem}
+/* ── FOOTER ── */
+footer{padding:.4rem 0 0;display:flex;flex-direction:column;gap:.3rem;align-items:center;text-align:center}
+.footer-line{font-size:.66rem;color:var(--muted2);line-height:1.5}
+.footer-math{font-size:.62rem;color:var(--bord2);font-family:'Space Grotesk',monospace}
+.footer-badges{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center;margin-top:.15rem}
 .badge{
-  font-size:.62rem;font-weight:600;letter-spacing:.05em;
-  padding:.2rem .55rem;border-radius:100px;
+  font-size:.6rem;font-weight:600;letter-spacing:.05em;
+  padding:.18rem .5rem;border-radius:100px;
   border:1px solid var(--bord);color:var(--muted2);
 }
 
-/* ══════════════════════════════════════════════════════════
-   TOAST
-══════════════════════════════════════════════════════════ */
+/* ── TOAST ── */
 #toast{
-  position:fixed;bottom:1.5rem;left:50%;
+  position:fixed;bottom:1.4rem;left:50%;
   transform:translateX(-50%) translateY(110px);
-  background:var(--surf2);
-  border:1px solid var(--bord2);
-  color:var(--txt);
-  font-size:.78rem;font-weight:600;
-  padding:.6rem 1.2rem;border-radius:100px;
+  background:var(--surf2);border:1px solid var(--bord2);
+  color:var(--txt);font-size:.76rem;font-weight:600;
+  padding:.55rem 1.1rem;border-radius:100px;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1);
   z-index:999;white-space:nowrap;pointer-events:none;
-  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  box-shadow:0 8px 28px rgba(0,0,0,.4);
+  max-width:90vw;text-overflow:ellipsis;overflow:hidden;
 }
 #toast.show{transform:translateX(-50%) translateY(0)}
 
-/* ══════════════════════════════════════════════════════════
-   ANIMATIONS
-══════════════════════════════════════════════════════════ */
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:translateY(0)}
-}
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shake{
   0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-5px)}
-  40%{transform:translateX(5px)}
-  60%{transform:translateX(-3px)}
-  80%{transform:translateX(3px)}
+  20%{transform:translateX(-5px)}40%{transform:translateX(5px)}
+  60%{transform:translateX(-3px)}80%{transform:translateX(3px)}
 }
 
-/* ══════════════════════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════════════════════ */
-@media(max-width:390px){
+/* ── RESPONSIVE: pantallas muy pequeñas (<360px) ── */
+@media(max-width:360px){
   .form-row{flex-direction:column}
-  .form-row .field.narrow{flex:1}
-  .search-row{flex-wrap:wrap}
-  .btn-search{width:100%;justify-content:center}
+  .form-row .field.narrow{flex:1;width:100%}
+  .logo-text{font-size:1.4rem}
+}
+/* pantallas medianas (360-480px) — solo ajustes menores */
+@media(max-width:480px){
+  .wrap{padding:0 .75rem 3.5rem}
+  .card{padding:1rem}
+  .btn-search{padding:0 1rem;font-size:.85rem}
 }
 </style>
 </head>
 <body>
-
 <div class="wrap">
 
-<!-- ══════════════════════════════════════════
-     HEADER
-══════════════════════════════════════════ -->
+<!-- HEADER -->
 <header>
   <div class="logo-row">
     <svg class="logo-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="44" height="44" rx="11" fill="#0F1E30"/>
       <rect width="44" height="44" rx="11" fill="url(#lg1)" opacity=".4"/>
-      <path d="M5 22 L11 22 L14 13 L17 31 L20 17 L23 25 L26 22 L39 22"
-        stroke="#F5C842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 22L11 22L14 13L17 31L20 17L23 25L26 22L39 22" stroke="#F5C842" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="33" cy="13" r="6" fill="none" stroke="#E63946" stroke-width="1.5"/>
       <path d="M33 10C31.2 10 29.5 11.4 29.5 13.1C29.5 15.4 33 18.5 33 18.5C33 18.5 36.5 15.4 36.5 13.1C36.5 11.4 34.8 10 33 10Z" fill="#E63946"/>
       <defs>
@@ -516,51 +370,49 @@ footer{
     </svg>
     <span class="logo-text">Bloom<em>-</em>Sismo</span>
   </div>
-  <div class="version-pill">
-    <span></span>DEMO v1.0 · Hackathon Venezuela 2025
-  </div>
-  <p class="tagline">Consulta offline si tu familiar fue localizado. Sin internet, sin datos, en menos de 1 segundo.</p>
+  <div class="vpill"><div class="vpill-dot"></div>Venezuela · Junio 2026</div>
+  <p class="tagline">Consulta offline si tu familiar fue localizado tras el terremoto. Sin internet, sin datos, en 0 ms.</p>
 </header>
 
-<!-- ══════════════════════════════════════════
-     SISMÓGRAFO
-══════════════════════════════════════════ -->
+<!-- BANNER EMERGENCIA -->
+<div class="emergency-banner">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <span><strong>Terremoto Venezuela — junio 2026.</strong> Esta herramienta funciona 100% offline. Ingresa la cédula de tu familiar para saber si fue reportado como localizado.</span>
+</div>
+
+<!-- SISMÓGRAFO -->
 <div class="seismo-wrap">
-  <svg id="seismo-svg" class="seismo-svg" viewBox="0 0 900 62" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <svg id="seismo-svg" class="seismo-svg" viewBox="0 0 900 58" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <polyline id="seismo-line"
-      points="0,31 35,31 55,11 66,51 80,21 94,41 105,31 140,31 160,8 175,54 190,17 205,45 218,31 255,31 275,12 290,50 305,22 320,40 335,31 370,31 390,5 407,57 422,15 437,47 452,31 490,31 510,11 521,51 535,21 549,41 560,31 595,31 615,8 630,54 645,17 660,45 673,31 710,31 730,12 745,50 760,22 775,40 790,31 830,31 850,5 867,57 880,15 895,47 900,31"
+      points="0,29 35,29 55,9 66,49 80,19 94,39 105,29 140,29 160,6 175,52 190,15 205,43 218,29 255,29 275,10 290,48 305,20 320,38 335,29 370,29 390,3 407,55 422,13 437,45 452,29 490,29 510,9 521,49 535,19 549,39 560,29 595,29 615,6 630,52 645,15 660,43 673,29 710,29 730,10 745,48 760,20 775,38 790,29 830,29 850,3 867,55 880,13 895,45 900,29"
       fill="none" stroke="url(#sg)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
     <polyline
-      points="900,31 935,31 955,11 966,51 980,21 994,41 1005,31 1040,31 1060,8 1075,54 1090,17 1105,45 1118,31 1155,31 1175,12 1190,50 1205,22 1220,40 1235,31 1270,31 1290,5 1307,57 1322,15 1337,47 1352,31 1390,31 1410,11 1421,51 1435,21 1449,41 1460,31 1495,31 1515,8 1530,54 1545,17 1560,45 1573,31 1610,31 1630,12 1645,50 1660,22 1675,40 1690,31 1730,31 1750,5 1767,57 1780,15 1795,47 1800,31"
+      points="900,29 935,29 955,9 966,49 980,19 994,39 1005,29 1040,29 1060,6 1075,52 1090,15 1105,43 1118,29 1155,29 1175,10 1190,48 1205,20 1220,38 1235,29 1270,29 1290,3 1307,55 1322,13 1337,45 1352,29 1390,29 1410,9 1421,49 1435,19 1449,39 1460,29 1495,29 1515,6 1530,52 1545,15 1560,43 1573,29 1610,29 1630,10 1645,48 1660,20 1675,38 1690,29 1730,29 1750,3 1767,55 1780,13 1795,45 1800,29"
       fill="none" stroke="url(#sg)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
     <defs>
       <linearGradient id="sg" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#4A9ECC" stop-opacity=".3"/>
+        <stop stop-color="#4A9ECC" stop-opacity=".25"/>
         <stop offset=".5" stop-color="#4A9ECC" stop-opacity=".75"/>
-        <stop offset="1" stop-color="#4A9ECC" stop-opacity=".3"/>
+        <stop offset="1" stop-color="#4A9ECC" stop-opacity=".25"/>
       </linearGradient>
     </defs>
   </svg>
   <span class="seismo-label" id="seismo-label">EN BÚSQUEDA</span>
 </div>
 
-<!-- ══════════════════════════════════════════
-     BUSCADOR
-══════════════════════════════════════════ -->
+<!-- BUSCADOR -->
 <div class="card">
   <div class="card-label">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     Consultar persona localizada
   </div>
-
   <div class="search-row">
     <div class="field">
       <label for="cedula-input">Número de Cédula de Identidad</label>
       <input type="number" id="cedula-input" placeholder="Ej: 12345678" inputmode="numeric" autocomplete="off">
     </div>
-    <button class="btn-search" onclick="buscar()">Buscar</button>
+    <button class="btn-search" id="btn-buscar">Buscar</button>
   </div>
-
   <div class="result" id="result-box" role="alert" aria-live="polite">
     <div class="result-head">
       <span class="result-emoji" id="r-emoji"></span>
@@ -568,50 +420,39 @@ footer{
     </div>
     <div class="result-body" id="r-body"></div>
     <div class="result-source" id="r-source"></div>
-    <div class="result-note" id="r-note" style="display:none"></div>
+    <div class="result-note" id="r-note"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     STATUS BAR
-══════════════════════════════════════════ -->
+<!-- STATUS BAR -->
 <div class="statusbar">
-  <div class="si"><div class="dot off" id="conn-dot"></div><span id="conn-lbl">Sin conexión</span></div>
+  <div class="si"><div class="dot off" id="conn-dot"></div><span id="conn-lbl">Verificando…</span></div>
   <div class="si">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    Filtro: <span id="filter-st" style="color:var(--gold)">Cargando…</span>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    Filtro: <span id="filter-st" style="color:var(--gold)">Iniciando…</span>
   </div>
   <div class="si"><span id="meta-info">—</span></div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     ALERTA SUPABASE
-══════════════════════════════════════════ -->
-<div class="alert" id="cfg-alert">
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:.1rem"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-  <span><strong>Supabase no configurado.</strong> Los reportes se guardan offline.
-  Edita <code>SUPABASE_URL</code> y <code>SUPABASE_ANON_KEY</code> al inicio del script para activar la sincronización.</span>
+<!-- ALERTA SUPABASE -->
+<div class="cfg-alert" id="cfg-alert">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:.15rem"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <span><strong>Supabase no configurado.</strong> Los reportes se guardan offline pero no se envían. Edita <code>SUPABASE_URL</code> y <code>SUPABASE_ANON_KEY</code> en el script.</span>
 </div>
 
-<!-- ══════════════════════════════════════════
-     COLA OFFLINE
-══════════════════════════════════════════ -->
-<div class="queue" id="queue-pill">
+<!-- COLA OFFLINE -->
+<div class="queue-pill" id="queue-pill">
   <div class="dot"></div>
   <span id="queue-lbl">0 reportes pendientes</span>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECCIÓN REPORTAR
-══════════════════════════════════════════ -->
-<div class="section-divider">Reportar</div>
-
+<!-- REPORTAR -->
+<div class="sdiv">Reportar</div>
 <div class="card">
-  <button class="acc-trigger" id="acc-btn" onclick="toggleAcc()">
+  <button class="acc-trigger" id="acc-btn">
     <span>+ Reportar persona desaparecida</span>
-    <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    <svg class="acc-chevron" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
   </button>
-
   <div class="acc-body" id="acc-body">
     <div class="form-row">
       <div class="field">
@@ -625,93 +466,76 @@ footer{
     </div>
     <div class="field">
       <label for="r-desc">Descripción / última ubicación conocida</label>
-      <input type="text" id="r-desc" placeholder="Ej: Visto en Caracas el 15/01, ropa azul…">
+      <input type="text" id="r-desc" placeholder="Ej: Valencia, ropa azul, el 25/06…">
     </div>
     <div class="field">
       <label for="r-contacto">Contacto del reportante (opcional)</label>
       <input type="text" id="r-contacto" placeholder="Ej: +58 412 000 0000">
     </div>
-    <button class="btn-report" onclick="reportar()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6.72 6.72l.81-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      Guardar reporte (sincroniza al recuperar internet)
+    <button class="btn-report" id="btn-reportar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.69 12a19.79 19.79 0 01-3.07-8.67A2 2 0 013.6 1.27h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 8.91a16 16 0 006.72 6.72l.81-.81a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Guardar reporte (se envía al recuperar internet)
     </button>
     <div id="r-feedback"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SECCIÓN QR
-══════════════════════════════════════════ -->
-<div class="section-divider">Sincronizar sin internet</div>
-
+<!-- QR -->
+<div class="sdiv">Sincronizar sin internet</div>
 <div class="card">
   <div class="card-label">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/><path d="M21 16h-3a2 2 0 00-2 2v3"/><path d="M21 21v.01M12 7v3a2 2 0 01-2 2H7M3 12h.01M12 3h.01M12 16v.01M16 12h1M21 12v.01M12 21v-1"/></svg>
     Código QR del filtro
   </div>
-  <p class="qr-note">
-    Un usuario con internet puede compartir el filtro actualizado generando este QR.
-    Otro, sin datos, lo escanea con la cámara y actualiza su app — cero bytes consumidos.
-  </p>
-  <button class="btn-ghost" onclick="toggleQR()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/><line x1="21" y1="21" x2="16" y2="16"/></svg>
+  <p class="qr-note">Un usuario con internet puede generar este QR. Otro, sin datos, lo escanea y actualiza su filtro — cero bytes consumidos.</p>
+  <button class="btn-ghost" id="btn-qr">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="5" height="5"/><rect x="16" y="3" width="5" height="5"/><rect x="3" y="16" width="5" height="5"/></svg>
     <span id="qr-btn-lbl">Mostrar QR</span>
   </button>
   <div class="qr-wrap" id="qr-wrap">
     <div class="qr-box"><div id="qr-render"></div></div>
-    <p style="font-size:.7rem;color:var(--muted);text-align:center">
-      Apunta la cámara — abre Bloom-Sismo con el filtro más reciente.
-    </p>
+    <p style="font-size:.68rem;color:var(--muted);text-align:center">Apunta la cámara — abre Bloom-Sismo actualizado.</p>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     FOOTER
-══════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer>
   <div class="footer-badges">
     <span class="badge">PWA · Offline-first</span>
-    <span class="badge">~90 KB · Sin dependencias</span>
+    <span class="badge">~90 KB</span>
     <span class="badge">0 ms latencia</span>
+    <span class="badge">Terremoto VE 2026</span>
   </div>
-  <p class="footer-line">Bloom-Sismo · Hackathon Venezuela 2025 · Código abierto</p>
-  <p class="footer-math">m = -(n · ln p) / (ln 2)² ≈ 89.8 KB para 50 000 registros · p = 0.1%</p>
+  <p class="footer-line">Bloom-Sismo · Venezuela 2026 · Código abierto · bloom-sismo.vercel.app</p>
+  <p class="footer-math">m = -(n · ln p) / (ln 2)² ≈ 89.8 KB · 50 000 registros · p = 0.1%</p>
 </footer>
 
-</div><!-- /.wrap -->
+</div>
 <div id="toast"></div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     ███████╗ ██████╗██████╗ ██╗██████╗ ████████╗
-     ██╔════╝██╔════╝██╔══██╗██║██╔══██╗╚══██╔══╝
-     ███████╗██║     ██████╔╝██║██████╔╝   ██║
-     ╚════██║██║     ██╔══██╗██║██╔═══╝    ██║
-     ███████║╚██████╗██║  ██║██║██║        ██║
-     ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝
-══════════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
 
-/* ═══════════════════════════════════════════════════════════════
-   ┌─────────────────────────────────────────────────────────┐
-   │  ①  CONFIGURACIÓN — SOLO EDITA ESTAS DOS LÍNEAS         │
-   │     Para conectar Supabase cambia los valores de abajo. │
-   │     Luego sube el archivo a Vercel o GitHub Pages.      │
-   └─────────────────────────────────────────────────────────┘
-════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   CONFIGURACIÓN SUPABASE
+   Cambia SOLO estos dos valores y redespliega.
+═══════════════════════════════════════════════════════ */
 const SUPABASE_URL      = 'https://fstdlfqpbhghrbtvkpdv.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_ppQGnNTrsUl03xm4tpSuyA_qKg7Jv-l';
 
-/* Detecta automáticamente si ya están configurados */
-const SB_READY = !SUPABASE_URL.includes('https://fstdlfqpbhghrbtvkpdv.supabase.co') && !SUPABASE_ANON_KEY.includes('sb_publishable_ppQGnNTrsUl03xm4tpSuyA_qKg7Jv-l');
+/* ── BUG FIX: detección correcta — comprueba si son los valores reales
+      (no placeholders), independientemente de cuáles sean ── */
+const SB_READY = (
+  SUPABASE_URL.startsWith('https://') &&
+  !SUPABASE_URL.includes('TU-PROYECTO') &&
+  SUPABASE_ANON_KEY.length > 20 &&
+  !SUPABASE_ANON_KEY.includes('TU_ANON')
+);
 
-/* ═══════════════════════════════════════════════════════════════
-   ┌─────────────────────────────────────────────────────────┐
-   │  ②  DATOS DEL FILTRO DE BLOOM                           │
-   │     Este bloque es reemplazado por build-filter.js      │
-   │     cuando corres: node build-filter.js                 │
-   └─────────────────────────────────────────────────────────┘
-════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   DATOS DEL FILTRO DE BLOOM
+   (build-filter.js inyecta los valores reales aquí)
+═══════════════════════════════════════════════════════ */
 // ── DATOS DEL FILTRO (AUTO-GENERADO por build-filter.js) ──
 const BLOOM_M = 718879;
 const BLOOM_K = 10;
@@ -720,17 +544,24 @@ const BLOOM_SOURCES = {};
 const BLOOM_META = { version:"demo", total:0, generated:"" };
 // ── FIN DATOS FILTRO ──
 
-/* ═══════════════════════════════════════════════════════════════
-   BLOOM FILTER — implementación cliente Vanilla JS puro
-═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   BLOOM FILTER — Vanilla JS puro
+═══════════════════════════════════════════════════════ */
 class BloomFilter {
   constructor(m, k, b64) {
     this.m = m; this.k = k;
-    if (b64) {
-      const bin = atob(b64);
-      this.bits = new Uint8Array(bin.length);
-      for (let i = 0; i < bin.length; i++) this.bits[i] = bin.charCodeAt(i);
-      this.ready = true;
+    if (b64 && b64.length > 0) {
+      try {
+        const bin = atob(b64);
+        this.bits = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) this.bits[i] = bin.charCodeAt(i);
+        this.ready = true;
+      } catch(e) {
+        console.warn('Error decodificando filtro, usando demo:', e);
+        this.bits = new Uint8Array(Math.ceil(m / 8));
+        this.ready = false;
+        this._demo();
+      }
     } else {
       this.bits = new Uint8Array(Math.ceil(m / 8));
       this.ready = false;
@@ -766,86 +597,110 @@ class BloomFilter {
   }
 
   _set(item) {
-    this._pos(item).forEach(p => { this.bits[p>>>3] |= (1 << (p&7)); });
+    this._pos(item).forEach(p => { this.bits[p>>>3] |= (1 << (p & 7)); });
   }
 
-  /** false → NO está (100% seguro) · true → probablemente SÍ (99.9%) */
   test(item) {
     if (!this.ready) return false;
-    return this._pos(item).every(p => (this.bits[p>>>3] & (1<<(p&7))) !== 0);
+    return this._pos(item).every(p => (this.bits[p>>>3] & (1 << (p & 7))) !== 0);
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   FUENTES DEMO — build-filter.js inyecta las reales
-═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   FUENTES DEMO
+═══════════════════════════════════════════════════════ */
 const DEMO_SRC = {
-  "12345678":{fuente:"Venezuela Te Busca",  nombre:"Carlos Rodríguez", fecha:"2025-01-15"},
-  "87654321":{fuente:"Manos por Venezuela", nombre:"María González",   fecha:"2025-01-14"},
-  "11223344":{fuente:"Cruz Roja Venezuela", nombre:"José Martínez",    fecha:"2025-01-13"},
-  "44332211":{fuente:"Venezuela Te Busca",  nombre:"Ana Pérez",        fecha:"2025-01-12"},
-  "55667788":{fuente:"Manos por Venezuela", nombre:"Luis Hernández",   fecha:"2025-01-11"},
-  "88776655":{fuente:"Venezuela Te Busca",  nombre:"Carmen López",     fecha:"2025-01-10"},
-  "99001122":{fuente:"Cruz Roja Venezuela", nombre:"Pedro Ramírez",    fecha:"2025-01-09"},
-  "22110099":{fuente:"Venezuela Te Busca",  nombre:"Isabel Torres",    fecha:"2025-01-08"},
-  "33445566":{fuente:"Manos por Venezuela", nombre:"Miguel Flores",    fecha:"2025-01-07"},
-  "66554433":{fuente:"Cruz Roja Venezuela", nombre:"Rosa Díaz",        fecha:"2025-01-06"},
-  "10203040":{fuente:"Venezuela Te Busca",  nombre:"Antonio Vargas",   fecha:"2025-01-05"},
-  "40302010":{fuente:"Manos por Venezuela", nombre:"Elena Castillo",   fecha:"2025-01-04"},
-  "50607080":{fuente:"Cruz Roja Venezuela", nombre:"Roberto Morales",  fecha:"2025-01-03"},
-  "80706050":{fuente:"Venezuela Te Busca",  nombre:"Patricia Jiménez", fecha:"2025-01-02"},
-  "15263748":{fuente:"Manos por Venezuela", nombre:"Fernando Ruiz",    fecha:"2025-01-01"},
-  "84736251":{fuente:"Cruz Roja Venezuela", nombre:"Gabriela Mendoza", fecha:"2024-12-31"},
-  "19283746":{fuente:"Venezuela Te Busca",  nombre:"Alejandro Soto",   fecha:"2024-12-30"},
-  "64738291":{fuente:"Manos por Venezuela", nombre:"Daniela Vega",     fecha:"2024-12-29"},
-  "73829104":{fuente:"Cruz Roja Venezuela", nombre:"Sergio Reyes",     fecha:"2024-12-28"},
-  "40192837":{fuente:"Venezuela Te Busca",  nombre:"Valentina Cruz",   fecha:"2024-12-27"}
+  "12345678":{fuente:"Venezuela Te Busca",  nombre:"Carlos Rodríguez", fecha:"2026-06-26"},
+  "87654321":{fuente:"Manos por Venezuela", nombre:"María González",   fecha:"2026-06-26"},
+  "11223344":{fuente:"Cruz Roja Venezuela", nombre:"José Martínez",    fecha:"2026-06-25"},
+  "44332211":{fuente:"Venezuela Te Busca",  nombre:"Ana Pérez",        fecha:"2026-06-25"},
+  "55667788":{fuente:"Manos por Venezuela", nombre:"Luis Hernández",   fecha:"2026-06-25"},
+  "88776655":{fuente:"Venezuela Te Busca",  nombre:"Carmen López",     fecha:"2026-06-26"},
+  "99001122":{fuente:"Cruz Roja Venezuela", nombre:"Pedro Ramírez",    fecha:"2026-06-26"},
+  "22110099":{fuente:"Venezuela Te Busca",  nombre:"Isabel Torres",    fecha:"2026-06-25"},
+  "33445566":{fuente:"Manos por Venezuela", nombre:"Miguel Flores",    fecha:"2026-06-26"},
+  "66554433":{fuente:"Cruz Roja Venezuela", nombre:"Rosa Díaz",        fecha:"2026-06-25"},
+  "10203040":{fuente:"Venezuela Te Busca",  nombre:"Antonio Vargas",   fecha:"2026-06-26"},
+  "40302010":{fuente:"Manos por Venezuela", nombre:"Elena Castillo",   fecha:"2026-06-25"},
+  "50607080":{fuente:"Cruz Roja Venezuela", nombre:"Roberto Morales",  fecha:"2026-06-26"},
+  "80706050":{fuente:"Venezuela Te Busca",  nombre:"Patricia Jiménez", fecha:"2026-06-25"},
+  "15263748":{fuente:"Manos por Venezuela", nombre:"Fernando Ruiz",    fecha:"2026-06-26"},
+  "84736251":{fuente:"Cruz Roja Venezuela", nombre:"Gabriela Mendoza", fecha:"2026-06-25"},
+  "19283746":{fuente:"Venezuela Te Busca",  nombre:"Alejandro Soto",   fecha:"2026-06-26"},
+  "64738291":{fuente:"Manos por Venezuela", nombre:"Daniela Vega",     fecha:"2026-06-25"},
+  "73829104":{fuente:"Cruz Roja Venezuela", nombre:"Sergio Reyes",     fecha:"2026-06-26"},
+  "40192837":{fuente:"Venezuela Te Busca",  nombre:"Valentina Cruz",   fecha:"2026-06-25"}
 };
 
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    ESTADO GLOBAL
-═══════════════════════════════════════════════════════════════ */
-let bloom, sources={}, db, qrDone=false, qrOpen=false;
+═══════════════════════════════════════════════════════ */
+let bloom, sources = {}, db, qrDone = false, qrOpen = false;
 
-/* ═══════════════════════════════════════════════════════════════
-   BOOT
-═══════════════════════════════════════════════════════════════ */
+/* helper */
+const $ = id => document.getElementById(id);
+
+/* ═══════════════════════════════════════════════════════
+   BOOT — arranque completo
+═══════════════════════════════════════════════════════ */
 (async function boot() {
-  bloom   = new BloomFilter(BLOOM_M, BLOOM_K, BLOOM_DATA_B64 || null);
-  sources = Object.keys(BLOOM_SOURCES).length ? {...DEMO_SRC,...BLOOM_SOURCES} : DEMO_SRC;
+
+  /* 1. Filtro */
+  bloom   = new BloomFilter(BLOOM_M, BLOOM_K, BLOOM_DATA_B64 || '');
+  sources = Object.keys(BLOOM_SOURCES).length
+    ? { ...DEMO_SRC, ...BLOOM_SOURCES }
+    : DEMO_SRC;
 
   const total = BLOOM_META.total || Object.keys(sources).length;
-  $('filter-st').textContent   = '✓ Listo';
-  $('filter-st').style.color   = 'var(--teal)';
-  $('meta-info').textContent   = `${total.toLocaleString()} registros`;
+  $('filter-st').textContent = '✓ Listo';
+  $('filter-st').style.color = 'var(--teal)';
+  $('meta-info').textContent = `${total.toLocaleString()} registros`;
 
+  /* 2. Conexión */
   connStatus();
   window.addEventListener('online',  onOnline);
   window.addEventListener('offline', connStatus);
 
-  try { await dbInit(); await queueUI(); } catch(e) { console.warn('IDB:',e); }
+  /* 3. IndexedDB */
+  try { await dbInit(); await queueUI(); }
+  catch(e) { console.warn('IDB no disponible:', e); }
 
+  /* 4. Banner Supabase */
   if (!SB_READY) $('cfg-alert').classList.add('show');
 
+  /* 5. Eventos de botones (sin onclick inline — compatibilidad total) */
+  $('btn-buscar').addEventListener('click', buscar);
+  $('cedula-input').addEventListener('keydown', e => { if (e.key === 'Enter') buscar(); });
+  $('acc-btn').addEventListener('click', toggleAcc);
+  $('btn-reportar').addEventListener('click', reportar);
+  $('btn-qr').addEventListener('click', toggleQR);
+
+  /* 6. Service Worker */
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
     navigator.serviceWorker.addEventListener('message', e => {
       if (e.data?.type === 'SYNC_NOW') syncQueue();
     });
   }
+
 })();
 
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    BÚSQUEDA OFFLINE
-═══════════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════════ */
 function buscar() {
   const inp    = $('cedula-input');
-  const cedula = inp.value.trim();
+  const cedula = inp.value.trim().replace(/\D/g, ''); /* quita cualquier carácter no numérico */
 
-  if (!cedula || isNaN(cedula) || cedula.length < 5) {
-    shake(inp); toast('⚠️ Ingresa una cédula válida','var(--red)'); return;
+  if (!cedula || cedula.length < 5) {
+    shake(inp);
+    toast('⚠️ Ingresa una cédula válida (mínimo 5 dígitos)', 'var(--red)');
+    return;
   }
-  if (!bloom?.ready) { toast('Filtro cargando…'); return; }
+  if (!bloom || !bloom.ready) {
+    toast('El filtro aún está cargando, espera un momento…');
+    return;
+  }
 
   const found = bloom.test(cedula);
   const src   = sources[cedula] || null;
@@ -867,75 +722,75 @@ function renderResult(found, cedula, src) {
     emoji.textContent = '✅';
     title.textContent = 'Alta probabilidad de estar localizado/a';
     if (src) {
-      body.textContent  = `${src.nombre} aparece en los registros con fecha ${src.fecha}.`;
-      srcEl.textContent = `📋 ${src.fuente}`;
-      srcEl.style.display = 'inline-flex';
-      note.innerHTML = `<strong style="color:var(--gold)">⚠️ Verificación requerida:</strong>
-        Este resultado tiene 99.9 % de precisión pero puede ser un falso positivo (0.1 %).
-        Confirma directamente en <em>${src.fuente}</em> antes de actuar.`;
+      body.textContent      = `${src.nombre} aparece en los registros con fecha ${src.fecha}.`;
+      srcEl.textContent     = `📋 ${src.fuente}`;
+      srcEl.style.display   = 'inline-flex';
     } else {
-      body.textContent = `La cédula ${cedula} aparece en la base consolidada de personas localizadas.`;
-      srcEl.style.display = 'none';
-      note.innerHTML = `<strong style="color:var(--gold)">⚠️ Verificación requerida:</strong>
-        Consulta las plataformas aliadas para confirmar. Precisión: 99.9 %.`;
+      body.textContent      = `La cédula ${cedula} aparece en la base consolidada de personas localizadas.`;
+      srcEl.style.display   = 'none';
     }
+    note.innerHTML = `<strong style="color:var(--gold)">⚠️ Verificación requerida:</strong>
+      Precisión 99.9 % — existe un 0.1 % de falsos positivos.
+      Confirma en ${src ? `<em>${src.fuente}</em>` : 'las plataformas aliadas'} antes de actuar.`;
+    note.style.display = 'block';
   } else {
-    emoji.textContent = '🔵';
-    title.textContent = 'No registrado/a como localizado/a';
-    body.textContent  = `La cédula ${cedula} no aparece en ninguna base de datos de personas encontradas.`;
-    srcEl.style.display = 'none';
-    note.innerHTML = `<strong style="color:var(--blue2)">✓ Garantía matemática 100 %:</strong>
-      Si el filtro dice NO, esa persona definitivamente no fue reportada como localizada todavía.
-      No hay falsos negativos. Puedes reportarla abajo.`;
+    emoji.textContent     = '🔵';
+    title.textContent     = 'No registrado/a como localizado/a';
+    body.textContent      = `La cédula ${cedula} no aparece en ninguna base de datos de personas encontradas.`;
+    srcEl.style.display   = 'none';
+    note.innerHTML = `<strong style="color:var(--blue2)">✓ Garantía 100 %:</strong>
+      El filtro de Bloom no tiene falsos negativos.
+      Si dice NO, esa persona definitivamente no ha sido reportada como localizada todavía.
+      Puedes reportarla en el formulario de abajo.`;
+    note.style.display = 'block';
   }
-  note.style.display = 'block';
 }
 
-$('cedula-input').addEventListener('keydown', e => { if(e.key==='Enter') buscar(); });
-
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    SISMÓGRAFO
-═══════════════════════════════════════════════════════════════ */
-const WAVE_ACTIVE = '0,31 35,31 55,11 66,51 80,21 94,41 105,31 140,31 160,8 175,54 190,17 205,45 218,31 255,31 275,12 290,50 305,22 320,40 335,31 370,31 390,5 407,57 422,15 437,47 452,31 490,31 510,11 521,51 535,21 549,41 560,31 595,31 615,8 630,54 645,17 660,45 673,31 710,31 730,12 745,50 760,22 775,40 790,31 830,31 850,5 867,57 880,15 895,47 900,31';
-const WAVE_CALM  = '0,31 80,31 110,26 130,36 150,31 250,31 290,26 310,36 330,31 430,31 470,26 490,36 510,31 610,31 650,26 670,36 690,31 790,31 830,26 850,36 870,31 900,31';
+═══════════════════════════════════════════════════════ */
+const WAVE_A = '0,29 35,29 55,9 66,49 80,19 94,39 105,29 140,29 160,6 175,52 190,15 205,43 218,29 255,29 275,10 290,48 305,20 320,38 335,29 370,29 390,3 407,55 422,13 437,45 452,29 490,29 510,9 521,49 535,19 549,39 560,29 595,29 615,6 630,52 645,15 660,43 673,29 710,29 730,10 745,48 760,20 775,38 790,29 830,29 850,3 867,55 880,13 895,45 900,29';
+const WAVE_C = '0,29 80,29 110,24 130,34 150,29 250,29 290,24 310,34 330,29 430,29 470,24 490,34 510,29 610,29 650,24 670,34 690,29 790,29 830,24 850,34 870,29 900,29';
 
 function seismoState(found) {
   const svg   = $('seismo-svg');
   const line  = $('seismo-line');
   const label = $('seismo-label');
   if (found) {
-    line.setAttribute('stroke','url(#sg-teal)');
-    line.setAttribute('points', WAVE_CALM);
-    label.textContent = 'LOCALIZADO'; label.style.color = 'var(--teal)';
-    svg.classList.add('calm');
-    // inyectar gradiente teal si no existe
     if (!document.getElementById('sg-teal')) {
-      const defs = svg.querySelector('defs') || svg.appendChild(document.createElementNS('http://www.w3.org/2000/svg','defs'));
+      const defs = svg.querySelector('defs');
       defs.insertAdjacentHTML('beforeend',
         `<linearGradient id="sg-teal" x1="0" y1="0" x2="900" y2="0" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#2EC4B6" stop-opacity=".3"/>
-          <stop offset=".5" stop-color="#2EC4B6" stop-opacity=".9"/>
-          <stop offset="1" stop-color="#2EC4B6" stop-opacity=".3"/>
+          <stop stop-color="#2EC4B6" stop-opacity=".25"/>
+          <stop offset=".5" stop-color="#2EC4B6" stop-opacity=".85"/>
+          <stop offset="1" stop-color="#2EC4B6" stop-opacity=".25"/>
         </linearGradient>`);
     }
+    line.setAttribute('stroke', 'url(#sg-teal)');
+    line.setAttribute('points', WAVE_C);
+    label.textContent = 'LOCALIZADO';
+    label.style.color = 'var(--teal)';
+    svg.classList.add('calm');
   } else {
-    line.setAttribute('stroke','url(#sg)');
-    line.setAttribute('points', WAVE_ACTIVE);
-    label.textContent = 'EN BÚSQUEDA'; label.style.color = '';
+    line.setAttribute('stroke', 'url(#sg)');
+    line.setAttribute('points', WAVE_A);
+    label.textContent = 'EN BÚSQUEDA';
+    label.style.color = '';
     svg.classList.remove('calm');
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   REPORTAR DESAPARECIDO
-═══════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   ACORDEÓN (Reportar)
+═══════════════════════════════════════════════════════ */
 function toggleAcc() {
-  const btn  = $('acc-btn');
-  const body = $('acc-body');
-  btn.classList.toggle('open');
-  body.classList.toggle('show');
+  $('acc-btn').classList.toggle('open');
+  $('acc-body').classList.toggle('show');
 }
 
+/* ═══════════════════════════════════════════════════════
+   REPORTAR DESAPARECIDO
+═══════════════════════════════════════════════════════ */
 async function reportar() {
   const nombre = $('r-nombre').value.trim();
   const cedula = $('r-cedula').value.trim();
@@ -944,96 +799,114 @@ async function reportar() {
   const fb     = $('r-feedback');
 
   if (!nombre || !cedula) {
-    toast('⚠️ Nombre y cédula son obligatorios','var(--red)'); return;
+    toast('⚠️ Nombre y cédula son obligatorios', 'var(--red)');
+    return;
   }
 
-  /* JSON Patch RFC 6902 — mínimo payload para redes 2G/3G degradadas */
-  const patch = {
-    op:   "add",
-    path: "/reports",
-    value: {
-      id:          uuid4(),   /* UUID para idempotencia en Supabase */
-      nombre, cedula, desc, contacto: cont,
-      estado:      "desaparecido",
-      timestamp:   new Date().toISOString()
-    }
+  const record = {
+    id:        uuid4(),
+    nombre,
+    cedula,
+    descripcion: desc,
+    contacto:  cont,
+    estado:    'desaparecido',
+    timestamp: new Date().toISOString(),
+    evento:    'Terremoto Venezuela Junio 2026'
   };
 
-  try {
-    await dbSave(patch);
-    fb.style.display = 'block';
-    fb.innerHTML = `<strong style="color:var(--teal)">✅ Guardado localmente.</strong>
-      Se sincronizará automáticamente cuando haya conexión.<br>
-      <span style="font-size:.7rem;color:var(--muted2)">ID: ${patch.value.id.slice(0,8)}…</span>`;
+  fb.style.display = 'block';
+  fb.innerHTML = '<span style="color:var(--muted)">Guardando…</span>';
 
-    ['r-nombre','r-cedula','r-desc','r-contacto'].forEach(id => $(id).value = '');
+  /* Intentar Supabase directo si hay conexión */
+  if (SB_READY && navigator.onLine) {
+    try {
+      await sendToSupabase(record);
+      fb.innerHTML = `<strong style="color:var(--teal)">✅ Enviado a la base de datos.</strong>
+        El reporte está disponible para los coordinadores.<br>
+        <span style="font-size:.68rem;color:var(--muted2)">ID: ${record.id.slice(0,8)}…</span>`;
+      limpiarForm();
+      toast('✅ Reporte enviado a Supabase');
+      return;
+    } catch(e) {
+      console.warn('Supabase directo falló, guardando offline:', e.message);
+    }
+  }
+
+  /* Guardar en cola offline (IndexedDB) */
+  try {
+    await dbSave(record);
+    fb.innerHTML = `<strong style="color:var(--teal)">✅ Guardado localmente.</strong>
+      Se enviará al recuperar internet.<br>
+      <span style="font-size:.68rem;color:var(--muted2)">ID: ${record.id.slice(0,8)}…</span>`;
+    limpiarForm();
     await queueUI();
     toast('📋 Reporte en cola offline');
     if (navigator.onLine) syncQueue();
   } catch(e) {
-    fb.style.display = 'block';
-    fb.innerHTML = `<span style="color:var(--red)">Error: ${e.message}</span>`;
+    fb.innerHTML = `<span style="color:var(--red)">Error al guardar: ${e.message}</span>`;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ┌───────────────────────────────────────────────────────────┐
-   │  SUPABASE — INTEGRACIÓN COMPLETA                          │
-   │                                                           │
-   │  SQL para crear la tabla (ejecutar en Supabase SQL editor)│
-   │  ─────────────────────────────────────────────────────    │
-   │  create table public.reports (                            │
-   │    id          uuid primary key,                          │
-   │    nombre      text not null,                             │
-   │    cedula      text not null,                             │
-   │    desc        text,                                      │
-   │    contacto    text,                                      │
-   │    estado      text default 'desaparecido',               │
-   │    timestamp   timestamptz not null,                      │
-   │    created_at  timestamptz default now()                  │
-   │  );                                                       │
-   │                                                           │
-   │  alter table public.reports enable row level security;    │
-   │                                                           │
-   │  -- INSERT público (ciudadanos pueden reportar)           │
-   │  create policy "insert_anon" on public.reports            │
-   │    for insert with check (true);                          │
-   │                                                           │
-   │  -- SELECT solo para admin autenticado                    │
-   │  create policy "select_auth" on public.reports            │
-   │    for select using (auth.role() = 'authenticated');      │
-   └───────────────────────────────────────────────────────────┘
-═══════════════════════════════════════════════════════════════ */
-async function sendToSupabase(report) {
-  if (!SB_READY) return false;
+function limpiarForm() {
+  ['r-nombre','r-cedula','r-desc','r-contacto'].forEach(id => $(id).value = '');
+}
+
+/* ═══════════════════════════════════════════════════════
+   SUPABASE REST — sin SDK pesado
+   ─────────────────────────────────────────────────────
+   SQL PARA CREAR LA TABLA (pegar en Supabase SQL Editor):
+
+   create table public.reports (
+     id          uuid primary key,
+     nombre      text not null,
+     cedula      text not null,
+     descripcion text,
+     contacto    text,
+     estado      text default 'desaparecido',
+     evento      text,
+     timestamp   timestamptz not null,
+     created_at  timestamptz default now()
+   );
+
+   alter table public.reports enable row level security;
+
+   create policy "insert_anon" on public.reports
+     for insert with check (true);
+
+   create policy "select_auth" on public.reports
+     for select using (auth.role() = 'authenticated');
+═══════════════════════════════════════════════════════ */
+async function sendToSupabase(record) {
+  if (!SB_READY) throw new Error('Supabase no configurado');
+
   const res = await fetch(`${SUPABASE_URL}/rest/v1/reports`, {
     method:  'POST',
     headers: {
       'Content-Type':  'application/json',
       'apikey':         SUPABASE_ANON_KEY,
       'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      /* Idempotencia: si el UUID ya existe en la BD, Supabase lo ignora */
       'Prefer':         'resolution=ignore-duplicates,return=minimal'
     },
-    body: JSON.stringify(report)
+    body: JSON.stringify(record)
   });
+
   if (!res.ok) {
     const txt = await res.text().catch(() => res.statusText);
-    throw new Error(`Supabase ${res.status}: ${txt}`);
+    throw new Error(`HTTP ${res.status}: ${txt}`);
   }
   return true;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    COLA OFFLINE — IndexedDB
-═══════════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════════ */
 function dbInit() {
-  return new Promise((ok,err) => {
-    const r = indexedDB.open('bloom-sismo',1);
+  return new Promise((ok, err) => {
+    const r = indexedDB.open('bloom-sismo-v2', 1);
     r.onupgradeneeded = e => {
       const d = e.target.result;
       if (!d.objectStoreNames.contains('outbox'))
-        d.createObjectStore('outbox',{keyPath:'id'});
+        d.createObjectStore('outbox', { keyPath: 'id' });
     };
     r.onsuccess = e => { db = e.target.result; ok(); };
     r.onerror   = () => err(r.error);
@@ -1041,7 +914,7 @@ function dbInit() {
 }
 
 function dbTx(mode, fn) {
-  return new Promise((ok,err) => {
+  return new Promise((ok, err) => {
     if (!db) { ok(null); return; }
     const tx = db.transaction('outbox', mode);
     const s  = tx.objectStore('outbox');
@@ -1051,37 +924,39 @@ function dbTx(mode, fn) {
   });
 }
 
-const dbSave   = p  => dbTx('readwrite', s => s.put({id:p.value.id, patch:p, saved:Date.now()}));
-const dbAll    = () => dbTx('readonly',  s => s.getAll());
-const dbDelete = id => dbTx('readwrite', s => { s.delete(id); return null; });
+const dbSave   = rec => dbTx('readwrite', s => s.put({ ...rec }));
+const dbAll    = ()  => dbTx('readonly',  s => s.getAll());
+const dbDelete = id  => dbTx('readwrite', s => { s.delete(id); return null; });
 
 async function syncQueue() {
-  if (!db) return;
+  if (!db || !SB_READY) return;
   const items = await dbAll();
   if (!items?.length) return;
 
   let n = 0;
   for (const it of items) {
     try {
-      const ok = await sendToSupabase(it.patch.value);
-      if (ok) { await dbDelete(it.id); n++; }
-    } catch(e) { console.warn('sync err', it.id, e.message); }
+      await sendToSupabase(it);
+      await dbDelete(it.id);
+      n++;
+    } catch(e) {
+      console.warn('sync error', it.id, e.message);
+    }
   }
-
   await queueUI();
-  if (n) toast(`✅ ${n} reporte${n>1?'s':''} sincronizado${n>1?'s':''}`);
+  if (n) toast(`✅ ${n} reporte${n > 1 ? 's' : ''} enviado${n > 1 ? 's' : ''}`);
 }
 
 async function queueUI() {
-  const items = await dbAll() || [];
+  const items = (await dbAll()) || [];
   const n = items.length;
-  $('queue-lbl').textContent = `${n} reporte${n!==1?'s':''} pendiente${n!==1?'s':''}`;
+  $('queue-lbl').textContent = `${n} reporte${n !== 1 ? 's' : ''} pendiente${n !== 1 ? 's' : ''}`;
   $('queue-pill').classList.toggle('show', n > 0);
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    QR
-═══════════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════════ */
 function toggleQR() {
   qrOpen = !qrOpen;
   $('qr-wrap').classList.toggle('show', qrOpen);
@@ -1096,32 +971,30 @@ function renderQR() {
     app:     'bloom-sismo',
     version: BLOOM_META.version || 'demo',
     total:   BLOOM_META.total || Object.keys(sources).length,
+    evento:  'Terremoto Venezuela Junio 2026',
     url:     location.href.split('?')[0]
   });
-
   if (typeof QRCode !== 'undefined') {
     new QRCode(wrap, {
-      text:         payload,
-      width:        200, height: 200,
-      colorDark:    '#070E17',
-      colorLight:   '#ffffff',
+      text: payload, width: 200, height: 200,
+      colorDark: '#070E17', colorLight: '#ffffff',
       correctLevel: QRCode.CorrectLevel.M
     });
     qrDone = true;
   } else {
     wrap.innerHTML = `<div style="width:200px;height:200px;display:flex;align-items:center;
       justify-content:center;background:#f5f5f5;border-radius:8px;
-      font-size:.75rem;color:#555;text-align:center;padding:1rem;">
+      font-size:.73rem;color:#555;text-align:center;padding:1rem;">
       QR no disponible sin internet.<br>Comparte el HTML por WhatsApp.</div>`;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    CONEXIÓN
-═══════════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════════ */
 function connStatus() {
   const on = navigator.onLine;
-  $('conn-dot').className = `dot ${on?'on':'off'}`;
+  $('conn-dot').className   = `dot ${on ? 'on' : 'off'}`;
   $('conn-lbl').textContent = on ? 'Conectado' : 'Sin conexión';
 }
 function onOnline() {
@@ -1130,30 +1003,32 @@ function onOnline() {
   syncQueue();
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════
    UTILIDADES
-═══════════════════════════════════════════════════════════════ */
-const $ = id => document.getElementById(id);
-
+═══════════════════════════════════════════════════════ */
 function uuid4() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    const r = Math.random()*16|0;
-    return (c==='x'?r:(r&0x3|0x8)).toString(16);
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
   });
 }
 
 function shake(el) {
-  el.style.animation='none'; el.offsetHeight;
-  el.style.animation='shake .3s ease';
-  setTimeout(()=>el.style.animation='',400);
+  el.style.animation = 'none';
+  void el.offsetHeight;
+  el.style.animation = 'shake .3s ease';
+  setTimeout(() => el.style.animation = '', 400);
 }
 
 let _tt;
-function toast(msg, color='var(--teal)') {
+function toast(msg, color = 'var(--teal)') {
   const t = $('toast');
-  t.textContent=msg; t.style.borderColor=color; t.style.color=color;
+  t.textContent       = msg;
+  t.style.borderColor = color;
+  t.style.color       = color;
   t.classList.add('show');
-  clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),3200);
+  clearTimeout(_tt);
+  _tt = setTimeout(() => t.classList.remove('show'), 3400);
 }
 </script>
 </body>
