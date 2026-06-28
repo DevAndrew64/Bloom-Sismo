@@ -640,7 +640,9 @@ function toast(msg, color = 'var(--teal)') {
   S.toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
 }
 </script>
-<script defer src="https://va.vercel-scripts.com/v1/analytics.js" data-endpoint="/_vercel/insights/event"></script>
-<script defer src="https://va.vercel-scripts.com/v1/speed-insights.js" data-endpoint="/_vercel/speed-insights/vitals"></script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
