@@ -233,7 +233,7 @@ footer{padding:.4rem 0 0;display:flex;flex-direction:column;gap:.3rem;align-item
 /* ═══════════════════════════════════════════════════════
    ① CONFIGURACIÓN — EDITA SOLO ESTAS DOS LÍNEAS
 ═══════════════════════════════════════════════════════ */
-import { SpeedInsights } from "@vercel/speed-insights/next"
+
 const SB_URL = 'https://fstdlfqpbhghrbtvkpdv.supabase.co';
 const SB_KEY = 'sb_publishable_ppQGnNTrsUl03xm4tpSuyA_qKg7Jv-l';
 
@@ -640,5 +640,7 @@ function toast(msg, color = 'var(--teal)') {
   S.toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
 }
 </script>
+<script defer src="https://va.vercel-scripts.com/v1/analytics.js" data-endpoint="/_vercel/insights/event"></script>
+<script defer src="https://va.vercel-scripts.com/v1/speed-insights.js" data-endpoint="/_vercel/speed-insights/vitals"></script>
 </body>
 </html>
