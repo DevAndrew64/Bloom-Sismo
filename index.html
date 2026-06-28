@@ -45,7 +45,6 @@ header{padding:1.8rem 0 .4rem;display:flex;flex-direction:column;gap:.55rem}
 .ebanner{display:flex;align-items:flex-start;gap:.6rem;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.3);border-left:3px solid var(--red);border-radius:var(--r2);padding:.75rem 1rem;font-size:.76rem;color:var(--txt);line-height:1.6}
 .ebanner strong{color:var(--red)}
 .ebanner svg{flex-shrink:0;margin-top:.1rem}
-/* sismógrafo */
 .sw{position:relative;width:100%;height:58px;background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);overflow:hidden}
 .sw::before,.sw::after{content:'';position:absolute;top:0;bottom:0;width:44px;z-index:2;pointer-events:none}
 .sw::before{left:0;background:linear-gradient(90deg,var(--surf),transparent)}
@@ -54,11 +53,9 @@ header{padding:1.8rem 0 .4rem;display:flex;flex-direction:column;gap:.55rem}
 .ssvg.calm{animation-duration:9s}
 @keyframes ss{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .slbl{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);font-size:.62rem;font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);pointer-events:none;z-index:3;transition:color .4s}
-/* cards */
 .card{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);padding:1.25rem;display:flex;flex-direction:column;gap:.85rem;box-shadow:0 4px 20px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.02);transition:border-color .2s,box-shadow .2s}
 .card:focus-within{border-color:var(--bord2);box-shadow:0 4px 28px rgba(0,0,0,.28),0 0 28px rgba(245,200,66,.16),inset 0 1px 0 rgba(255,255,255,.025)}
 .clbl{display:flex;align-items:center;gap:.45rem;font-family:'Space Grotesk',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold)}
-/* inputs */
 .field{display:flex;flex-direction:column;gap:.3rem;min-width:0;width:100%}
 .field label{font-size:.73rem;font-weight:500;color:var(--muted)}
 input[type=text],input[type=number]{width:100%;min-width:0;background:var(--bg2);border:1.5px solid var(--bord);border-radius:var(--r2);color:var(--txt);font-size:1rem;font-family:'Space Grotesk',sans-serif;font-weight:500;padding:.65rem .9rem;outline:none;transition:border-color .18s,box-shadow .18s;-moz-appearance:textfield;box-sizing:border-box}
@@ -70,7 +67,6 @@ input::placeholder{color:var(--muted2);font-weight:400}
 .bsearch{flex-shrink:0;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#0a1520;border:none;border-radius:var(--r2);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;height:42px;padding:0 1.2rem;cursor:pointer;white-space:nowrap;box-shadow:0 3px 14px rgba(245,200,66,.22);transition:opacity .15s,transform .1s;position:relative;overflow:hidden}
 .bsearch::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.14) 0%,transparent 100%);pointer-events:none}
 .bsearch:hover{opacity:.9}.bsearch:active{transform:scale(.97)}
-/* resultado */
 .result{display:none;border-radius:var(--r2);padding:1rem 1.1rem;flex-direction:column;gap:.5rem;animation:fadeUp .25s cubic-bezier(.22,.61,.36,1)}
 .result.show{display:flex}
 .result.found{background:linear-gradient(135deg,rgba(46,196,182,.08),rgba(46,196,182,.04));border:1.5px solid rgba(46,196,182,.4);box-shadow:0 0 28px rgba(46,196,182,.16)}
@@ -82,17 +78,14 @@ input::placeholder{color:var(--muted2);font-weight:400}
 .rbody{font-size:.78rem;color:var(--muted);line-height:1.6}
 .rsrc{display:none;align-items:center;gap:.35rem;background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.2);color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.04em;padding:.27rem .65rem;border-radius:100px;align-self:flex-start}
 .rnote{font-size:.7rem;color:var(--muted);padding-top:.4rem;border-top:1px solid var(--bord);line-height:1.6}
-/* status */
 .sbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.35rem;padding:.45rem .85rem;background:var(--surf);border:1px solid var(--bord);border-radius:var(--r2);font-size:.68rem}
 .si{display:flex;align-items:center;gap:.35rem;color:var(--muted);min-width:0}
 .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .dot.on{background:var(--teal);box-shadow:0 0 5px var(--teal)}.dot.off{background:var(--red)}
-/* alertas */
 .calert{display:none;align-items:flex-start;gap:.5rem;background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.16);border-left:3px solid var(--gold);border-radius:var(--r2);padding:.7rem .9rem;font-size:.73rem;color:var(--muted);line-height:1.6}
 .calert.show{display:flex}.calert strong{color:var(--gold)}.calert code{background:rgba(255,255,255,.06);border-radius:4px;padding:.1em .35em;font-size:.85em;color:var(--blue2)}
 .qpill{display:none;align-items:center;gap:.45rem;background:rgba(245,200,66,.05);border:1px solid rgba(245,200,66,.11);border-radius:100px;padding:.38rem .85rem;font-size:.7rem;color:var(--muted)}
 .qpill.show{display:flex}.qpill .dot{background:var(--gold);animation:pls 1.4s ease infinite}
-/* acordeón */
 .atrig{all:unset;cursor:pointer;box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:.83rem;font-weight:600;color:var(--muted);padding:.55rem .75rem;border-radius:var(--r2);border:1.5px dashed var(--bord);transition:border-color .18s,color .18s,background .18s}
 .atrig:hover{border-color:var(--bord2);color:var(--txt);background:rgba(255,255,255,.02)}
 .atrig.open{border-style:solid;border-color:var(--bord2);color:var(--txt);background:rgba(255,255,255,.02)}
@@ -105,7 +98,6 @@ input::placeholder{color:var(--muted2);font-weight:400}
 .brep{all:unset;cursor:pointer;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:.45rem;width:100%;background:linear-gradient(135deg,rgba(230,57,70,.1),rgba(230,57,70,.06));border:1.5px solid rgba(230,57,70,.35);border-radius:var(--r2);color:var(--red);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.82rem;padding:.68rem 1rem;transition:background .18s,border-color .18s,box-shadow .18s}
 .brep:hover{background:rgba(230,57,70,.16);border-color:rgba(230,57,70,.6);box-shadow:0 0 18px rgba(230,57,70,.18)}
 #rfb{font-size:.73rem;color:var(--muted);display:none;line-height:1.6;padding:.55rem .8rem;background:rgba(46,196,182,.05);border:1px solid rgba(46,196,182,.14);border-radius:var(--r2);animation:fadeUp .2s ease}
-/* QR */
 .qwrap{display:none;flex-direction:column;gap:.7rem;animation:fadeUp .2s ease}
 .qwrap.show{display:flex}
 .qnote{font-size:.73rem;color:var(--muted);line-height:1.6}
@@ -113,23 +105,18 @@ input::placeholder{color:var(--muted2);font-weight:400}
 #qr-render canvas,#qr-render img{display:block;max-width:200px;height:auto}
 .bghost{all:unset;cursor:pointer;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:.4rem;width:100%;border:1.5px solid var(--bord);border-radius:var(--r2);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.78rem;padding:.55rem 1rem;transition:border-color .18s,color .18s}
 .bghost:hover{border-color:var(--blue);color:var(--blue2)}
-/* divider */
 .sdiv{display:flex;align-items:center;gap:.65rem;font-size:.63rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2)}
 .sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:var(--bord)}
-/* footer */
 footer{padding:.4rem 0 0;display:flex;flex-direction:column;gap:.3rem;align-items:center;text-align:center}
 .fline{font-size:.66rem;color:var(--muted2);line-height:1.5}
 .fmath{font-size:.62rem;color:var(--bord2);font-family:'Space Grotesk',monospace}
 .fbadges{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:center;margin-top:.15rem}
 .badge{font-size:.6rem;font-weight:600;letter-spacing:.05em;padding:.18rem .5rem;border-radius:100px;border:1px solid var(--bord);color:var(--muted2)}
-/* toast */
 #toast{position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%) translateY(110px);background:var(--surf2);border:1px solid var(--bord2);color:var(--txt);font-size:.76rem;font-weight:600;padding:.55rem 1.1rem;border-radius:100px;transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.4);max-width:90vw;overflow:hidden;text-overflow:ellipsis}
 #toast.show{transform:translateX(-50%) translateY(0)}
-/* animaciones */
 @keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 @keyframes pls{0%,100%{opacity:1}50%{opacity:.2}}
-/* responsive */
 @media(max-width:360px){.frow{flex-direction:column}.frow .field.narrow{flex:1;width:100%}.logo-text{font-size:1.4rem}}
 @media(max-width:480px){.wrap{padding:0 .75rem 3.5rem}.card{padding:1rem}.bsearch{padding:0 1rem;font-size:.85rem}}
 </style>
@@ -230,8 +217,6 @@ footer{padding:.4rem 0 0;display:flex;flex-direction:column;gap:.3rem;align-item
 
 <script>
 'use strict';
-/* ═══════════════════════════════════════════════════════
-   ① CONFIGURACIÓN — EDITA SOLO ESTAS DOS LÍNEAS
 ═══════════════════════════════════════════════════════ */
 
 const SB_URL = 'https://fstdlfqpbhghrbtvkpdv.supabase.co';
@@ -246,7 +231,6 @@ const BLOOM_SOURCES = {"3456789":{"nombre":"Luisa Beatriz Ortega","fuente":"Cruz
 const BLOOM_META = { version:"2026-06-28", total:80, generated:"2026-06-28T16:17:07.993Z" };
 // ── FIN DATOS FILTRO ──
 
-/* ═══════════════════════════════════════════════════════
    CONSTANTES Y ESTADO — todo en un objeto, sin globals dispersos
 ═══════════════════════════════════════════════════════ */
 const SB_READY = SB_URL.startsWith('https://') && !SB_URL.includes('TU-') && SB_KEY.length > 20 && !SB_KEY.includes('TU_');
@@ -260,13 +244,11 @@ const S = {
   toastTimer: 0,
 };
 
-/* ── helper DOM — una sola vez por id, sin repetir querySelector ── */
 const E = (() => {
   const cache = {};
   return id => cache[id] || (cache[id] = document.getElementById(id));
 })();
 
-/* ═══════════════════════════════════════════════════════
    FILTRO DE BLOOM — FNV-1a
    Sin allocations en el hot-path: _pos reutiliza un buffer fijo
 ═══════════════════════════════════════════════════════ */
@@ -282,8 +264,7 @@ class BF {
         this.ok = true; return;
       } catch(_) {}
     }
-    // fallback demo
-    this.bits = new Uint8Array(Math.ceil(m / 8));
+        this.bits = new Uint8Array(Math.ceil(m / 8));
     this.ok = false;
     this._demo();
   }
@@ -302,8 +283,7 @@ class BF {
     return h;
   }
 
-  /* escribe posiciones en this._buf — sin crear Array */
-  _fill(s) {
+    _fill(s) {
     for (let i = 0; i < this.k; i++) {
       const h1 = this._fnv(s, i * 0x9747b28c);
       const h2 = this._fnv(s, i * 0x6b432948 + 1);
@@ -316,8 +296,7 @@ class BF {
     for (let i = 0; i < this.k; i++) { const p = this._buf[i]; this.bits[p >>> 3] |= 1 << (p & 7); }
   }
 
-  /* hot-path — 0 alloc, early-exit en primer bit 0 */
-  test(raw) {
+    test(raw) {
     if (!this.ok) return false;
     this._fill(raw);
     for (let i = 0; i < this.k; i++) { const p = this._buf[i]; if (!(this.bits[p >>> 3] & (1 << (p & 7)))) return false; }
@@ -325,7 +304,6 @@ class BF {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
    FUENTES DEMO
 ═══════════════════════════════════════════════════════ */
 const DEMO = {
@@ -351,7 +329,6 @@ const DEMO = {
   '40192837':{f:'Venezuela Te Busca',  n:'Valentina Cruz',   d:'2026-06-25'},
 };
 
-/* ═══════════════════════════════════════════════════════
    BOOT
 ═══════════════════════════════════════════════════════ */
 (async function boot() {
@@ -381,7 +358,6 @@ const DEMO = {
   }
 })();
 
-/* ═══════════════════════════════════════════════════════
    BÚSQUEDA — 0 ms, 0 red, 0 alloc en hot-path
 ═══════════════════════════════════════════════════════ */
 function buscar() {
@@ -416,7 +392,6 @@ function renderResult(found, ci, m) {
   E('rn').style.display = 'block';
 }
 
-/* ═══════════════════════════════════════════════════════
    SISMÓGRAFO
 ═══════════════════════════════════════════════════════ */
 function seismoState(found) {
@@ -434,7 +409,6 @@ function seismoState(found) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
    REPORTAR — fire-and-forget con AbortController timeout
    Sin pooling, sin reintentos automáticos, sin polling.
    El SW dispara SYNC_NOW cuando detecta reconexión.
@@ -475,8 +449,7 @@ async function reportar() {
       await dbSave(rec);
       fb.innerHTML = `<strong style="color:var(--teal)">✅ Guardado offline.</strong> Se enviará al recuperar internet.<br><span style="font-size:.68rem;color:var(--muted2)">ID: ${rec.id.slice(0,8)}…</span>`;
       clearForm(); await queueUI(); toast('📋 En cola offline');
-      /* Background Sync si el SW lo soporta */
-      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            if ('serviceWorker' in navigator && 'SyncManager' in window) {
         const reg = await navigator.serviceWorker.ready;
         await reg.sync.register('sync-reports').catch(() => {});
       }
@@ -491,7 +464,6 @@ async function reportar() {
 
 function clearForm() { ['rn','rc','rd','rco'].forEach(id => E(id).value = ''); }
 
-/* ═══════════════════════════════════════════════════════
    SUPABASE REST — fire-and-forget con timeout de 8 s
    Sin SDK, sin polling, sin reintentos automáticos.
    La resolución de conflictos la maneja Postgres con
@@ -510,8 +482,7 @@ async function sbPost(rec) {
         'Content-Type':  'application/json',
         'apikey':         SB_KEY,
         'Authorization': `Bearer ${SB_KEY}`,
-        /* ON CONFLICT DO NOTHING vía cabecera — sin lógica de dedup en cliente */
-        'Prefer':         'resolution=ignore-duplicates,return=minimal',
+                'Prefer':         'resolution=ignore-duplicates,return=minimal',
       },
       body: JSON.stringify(rec),
     });
@@ -522,7 +493,6 @@ async function sbPost(rec) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════
    COLA OFFLINE — IndexedDB
    La cola solo existe para el caso sin red.
    syncQ() se llama UNA VEZ cuando el SW detecta reconexión
@@ -575,7 +545,6 @@ async function queueUI() {
   E('qp').classList.toggle('show', n > 0);
 }
 
-/* ═══════════════════════════════════════════════════════
    QR — lazy: el script solo se carga si el usuario abre el panel
 ═══════════════════════════════════════════════════════ */
 function toggleQR() {
@@ -587,8 +556,7 @@ function toggleQR() {
 
 function loadQR() {
   if (typeof QRCode !== 'undefined') { renderQR(); return; }
-  /* Carga lazy del script — no penaliza el primer load */
-  const sc = document.createElement('script');
+    const sc = document.createElement('script');
   sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
   sc.onload = renderQR;
   sc.onerror = () => { E('qr-render').innerHTML = '<p style="font-size:.73rem;color:var(--muted);text-align:center;padding:1rem">QR no disponible sin internet.<br>Comparte el HTML por WhatsApp.</p>'; };
@@ -604,7 +572,6 @@ function renderQR() {
   S.qrDone = true;
 }
 
-/* ═══════════════════════════════════════════════════════
    CONEXIÓN
 ═══════════════════════════════════════════════════════ */
 function connStatus() {
@@ -614,10 +581,8 @@ function connStatus() {
 }
 function onOnline() { connStatus(); toast('📶 Conectado — sincronizando…'); syncQ(); }
 
-/* ═══════════════════════════════════════════════════════
    UTILIDADES
 ═══════════════════════════════════════════════════════ */
-/* UUID v4 con crypto.getRandomValues — más seguro que Math.random() */
 function uuid4() {
   const b = new Uint8Array(16);
   crypto.getRandomValues(b);
@@ -640,6 +605,7 @@ function toast(msg, color = 'var(--teal)') {
   S.toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
 }
 </script>
+
 
 <!-- Vercel Analytics + Speed Insights -->
 <script defer src="https://va.vercel-scripts.com/v1/analytics.js"></script>
