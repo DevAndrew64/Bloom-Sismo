@@ -1,71 +1,66 @@
 /**
  * BLOOM-SISMO — Service Worker
- * Cache-First Strategy para funcionamiento 100% offline
+ * Cache-First para funcionamiento 100% offline
+ * Terremoto Venezuela · Junio 2026
  */
 
-const CACHE_NAME = 'bloom-sismo-v1';
-const ASSETS = [
-  './',
-  './index.html'
-];
+const CACHE = 'bloom-sismo-v3';
+const ASSETS = ['./', './index.html'];
 
-// Instalar: cachear todos los assets
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS);
-    })
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(c => c.addAll(ASSETS))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-// Activar: limpiar caches viejos
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+  );
+});
+
+/* Cache-First: sirve desde cache, actualiza en background */
+self.addEventListener('fetch', e => {
+  /* Solo interceptar GET y same-origin / CDN fonts/scripts */
+  if (e.request.method !== 'GET') return;
+
+  /* No interceptar llamadas a Supabase — deben ir siempre a la red */
+  const url = new URL(e.request.url);
+  if (url.hostname.includes('supabase.co')) return;
+
+  e.respondWith(
+    caches.match(e.request).then(cached => {
+      const networkFetch = fetch(e.request)
+        .then(res => {
+          if (res && res.status === 200 && res.type !== 'opaque') {
+            const clone = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => null);
+
+      /* Si tenemos cache, devolvemos inmediatamente y actualizamos en background */
+      return cached || networkFetch.then(res => res || caches.match('./index.html'));
+    })
+  );
+});
+
+/* Trigger de sincronización desde el cliente */
+self.addEventListener('message', e => {
+  if (e.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
+self.addEventListener('sync', e => {
+  if (e.tag === 'sync-reports') {
+    e.waitUntil(
+      self.clients.matchAll().then(clients =>
+        clients.forEach(c => c.postMessage({ type: 'SYNC_NOW' }))
       )
-    )
-  );
-  self.clients.claim();
-});
-
-// Fetch: Cache-First (offline primero)
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        // Solo cachear respuestas válidas
-        if (!response || response.status !== 200 || response.type !== 'basic') {
-          return response;
-        }
-        const toCache = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, toCache);
-        });
-        return response;
-      }).catch(() => {
-        // Si falla la red y no hay cache, devolver página principal
-        return caches.match('./index.html');
-      });
-    })
-  );
-});
-
-// Sincronización en background cuando recupera conexión
-self.addEventListener('sync', event => {
-  if (event.tag === 'sync-reports') {
-    event.waitUntil(syncOfflineReports());
+    );
   }
 });
-
-async function syncOfflineReports() {
-  // Esta función se llama cuando se recupera la conexión
-  // El cliente maneja la cola de IndexedDB
-  const clients = await self.clients.matchAll();
-  clients.forEach(client => {
-    client.postMessage({ type: 'SYNC_NOW' });
-  });
-}

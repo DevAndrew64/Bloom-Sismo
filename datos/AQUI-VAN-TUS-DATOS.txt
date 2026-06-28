@@ -1,0 +1,15 @@
+# Esta carpeta contiene los archivos de datos reales.
+# No se sube al repositorio para proteger la privacidad.
+# 
+# Archivos que van aquí:
+#   ong-api.json              ← generado por fetch-ong-api.js
+#   venezuela-te-busca.csv
+#   manos-por-venezuela.json
+#   cruz-roja.csv
+#   foro-penal.json
+#   provea.csv
+#   (cualquier .json o .csv con personas localizadas)
+#
+# Formato mínimo CSV:
+#   cedula,nombre,fuente,fecha
+#   12345678,Juan Pérez,Venezuela Te Busca,2026-06-26

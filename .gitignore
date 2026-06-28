@@ -1,0 +1,21 @@
+# ── Datos sensibles — NO subir al repositorio ──
+datos/*.csv
+datos/*.json
+datos/*.xlsx
+
+# ── Excepciones: archivos de ejemplo que SÍ se suben ──
+!datos/AQUI-VAN-TUS-DATOS.txt
+
+# ── Node ──
+node_modules/
+npm-debug.log*
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editors ──
+.vscode/settings.json
+*.swp
+*.swo
