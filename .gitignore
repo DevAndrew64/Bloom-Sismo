@@ -1,10 +1,13 @@
 # ── Datos sensibles — NO subir al repositorio ──
+# Los archivos de datos REALES de personas no van al repo
 datos/*.csv
 datos/*.json
 datos/*.xlsx
 
-# ── Excepciones: archivos de ejemplo que SÍ se suben ──
+# ── Excepciones: archivos de PRUEBA que SÍ se suben ──
 !datos/AQUI-VAN-TUS-DATOS.txt
+!datos/localizados-prueba.csv
+!datos/ong-api-simulada.json
 
 # ── Node ──
 node_modules/

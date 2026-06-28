@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "descripcion": "Datos de prueba — simula respuesta de API de ONG aliada",
+    "evento": "Terremoto Venezuela Junio 2026",
+    "generado": "2026-06-27T18:00:00Z",
+    "total": 30,
+    "nota": "Reemplazar con fetch-ong-api.js cuando la ONG provea su endpoint"
+  },
+  "localizados": [
+    { "cedula": "23456789", "nombre": "Luisa Paola Fernández Soto",     "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "24567890", "nombre": "Ricardo José Blanco Peña",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "25678901", "nombre": "Marta Elena Gutiérrez",          "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "26789012", "nombre": "Nicolás Sebastián Torres",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "27890123", "nombre": "Adriana Milena Rojas Cruz",      "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "28901234", "nombre": "Víctor Hugo Salazar",            "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "29012345", "nombre": "Cindy Lorena Paredes",           "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "30123456", "nombre": "Hernán Darío Molina Ríos",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "31234567", "nombre": "Paola Andreina Serrano",         "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "32345678", "nombre": "Gustavo Adolfo Vera Méndez",     "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "33456789", "nombre": "Sandra Patricia Acosta",         "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "34567890", "nombre": "Manuel Eduardo Fuentes",         "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "35678901", "nombre": "Liliana Esperanza Cárdenas",     "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "36789012", "nombre": "Ignacio Rafael Parra Soto",      "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "37890123", "nombre": "Beatriz Alejandra León",         "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "38901234", "nombre": "Julio César Contreras",          "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "39012345", "nombre": "Verónica del Valle Rivas",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "40123456", "nombre": "Emilio José Delgado Ruiz",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "41234567", "nombre": "Alejandra Beatriz Montoya",      "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "42345678", "nombre": "Cristóbal Augusto Vásquez",      "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "43456789", "nombre": "Rebeca Yolimar Alvarado",        "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "44567890", "nombre": "Franklin Antonio Peñaranda",     "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "45678901", "nombre": "Estrella Mariana Cabrera",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "46789012", "nombre": "Humberto Elías Quintero",        "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "47890123", "nombre": "Marianela Josefina Tovar",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "48901234", "nombre": "Leonardo Augusto Pinto",         "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "49012345", "nombre": "Graciela Marisol Zerpa",         "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "50123456", "nombre": "Armando Rafael Useche",          "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" },
+    { "cedula": "51234567", "nombre": "Xiomara Valentina Pulido",       "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-27" },
+    { "cedula": "52345678", "nombre": "Oswaldo Enrique Bravo",          "fuente": "ONG Aliada (simulada)", "fecha": "2026-06-26" }
+  ]
+}
