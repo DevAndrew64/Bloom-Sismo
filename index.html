@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -640,9 +640,9 @@ function toast(msg, color = 'var(--teal)') {
   S.toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
 }
 </script>
-<script>
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
+
+<!-- Vercel Analytics + Speed Insights -->
+<script defer src="https://va.vercel-scripts.com/v1/analytics.js"></script>
+<script defer src="https://va.vercel-scripts.com/v1/speed-insights.js"></script>
 </body>
 </html>
